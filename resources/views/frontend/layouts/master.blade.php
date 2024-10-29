@@ -101,7 +101,7 @@
     <script src="{{ asset('frontend/js/toastr.min.js') }}"></script>
 
     <script>
-        toastr.option.progressBar = true;
+        toastr.options.progressBar = true;
         @if ($errors->any())
             @foreach ($errors->all() as $error)
                 toastr.error("{{ $error }}")

@@ -115,7 +115,7 @@
                                 </div>
                             </form>
                             <p class="or"><span>or</span></p>
-                            <p class="create_account">Dont’t have an aceount ? <a href="sign_up.html">Create
+                            <p class="create_account">Dont’t have an aceount ? <a href="{{ route('register') }}">Create
                                     Account</a>
                             </p>
                         </div>
