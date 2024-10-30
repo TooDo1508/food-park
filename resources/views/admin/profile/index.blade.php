@@ -13,9 +13,15 @@
                     <h4>Update user settings</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.profile.update') }}" method="POST">
+                    <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        <div class="form-group">
+                            <div id="image-preview" class="image-preview">
+                                <label for="image-upload" id="image-label">Choose File</label>
+                                <input type="file" name="avatar" id="image-upload">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" class="form-control" name="name" value="{{ auth()->user()->name }}">
@@ -34,10 +40,12 @@
                     <h4>Update user settings</h4>
                 </div>
                 <div class="card-body">
-                    <form action="">
+                    <form action="{{ route('admin.profile.password.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label>Current Password</label>
-                            <input type="password" class="form-control" name="password">
+                            <input type="password" class="form-control" name="current_password">
                         </div>
                         <div class="form-group">
                             <label>New Password</label>
@@ -47,7 +55,7 @@
                             <label>Confirm Password</label>
                             <input type="password" class="form-control" name="password_confirmation">
                         </div>
-                        <button class="btn btn-primary">Save</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
                     </form>
                 </div>
             </div>
@@ -55,3 +63,16 @@
         </div>
     </section>
 @endsection
+
+
+@push('script')
+    <script>
+        $(document).ready(function(){
+            $('.image-preview').css({
+                'background-image': 'url({{ asset(auth()->user()->avatar) }})',
+                'background-size': 'cover',
+                'background-position': 'center center',
+            })
+        })
+    </script>
+@endpush
