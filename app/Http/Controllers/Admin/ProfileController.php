@@ -40,7 +40,7 @@ class ProfileController extends Controller
     public function updatePassword(ProfilePasswordUpdateRequest $request): RedirectResponse
     {
         $user = Auth::user();
-        $user->password = bcrypt($request->name);
+        $user->password = bcrypt($request->password);
         $user->save();
 
         toastr('Update password successfully.', 'success');
