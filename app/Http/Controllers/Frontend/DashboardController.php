@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class FrontendController extends Controller
+class DashboardController extends Controller
 {
-    //
+    // //
     public function index() : View {
-        return view('frontend.home.index');
+        return view('frontend.dashboard.index');
     }
-
-
 }
