@@ -2,8 +2,8 @@
 
 @section('content')
     <!--=============================
-            BREADCRUMB START
-        ==============================-->
+                                                BREADCRUMB START
+                                            ==============================-->
     <section class="fp__breadcrumb" style="background: url(images/counter_bg.jpg);">
         <div class="fp__breadcrumb_overlay">
             <div class="container">
@@ -17,14 +17,7 @@
             </div>
         </div>
     </section>
-    <!--=============================
-            BREADCRUMB END
-        ==============================-->
 
-
-    <!--=========================
-            DASHBOARD START
-        ==========================-->
     <section class="fp__dashboard mt_120 xs_mt_90 mb_100 xs_mb_70">
         <div class="container">
             <div class="fp__dashboard_area">
@@ -33,11 +26,14 @@
                         <div class="fp__dashboard_menu">
                             <div class="dasboard_header">
                                 <div class="dasboard_header_img">
-                                    <img src="images/comment_img_2.png" alt="user" class="img-fluid w-100">
+                                    <img src="{{ auth()->user()->avatar }}" alt="user" class="img-fluid w-100">
                                     <label for="upload"><i class="far fa-camera"></i></label>
-                                    <input type="file" id="upload" hidden>
+                                    <form id="avatar_form">
+                                        @csrf
+                                        <input type="file" id="upload" hidden name="avatar"></input>
+                                    </form>
                                 </div>
-                                <h2>hasib ahmed</h2>
+                                <h2>{{ auth()->user()->name }}</h2>
                             </div>
                             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
@@ -129,13 +125,15 @@
                                                         <div class="col-12">
                                                             <div class="fp__comment_imput_single">
                                                                 <label>name</label>
-                                                                <input type="text" placeholder="Name" name="name" value="{{ auth()->user()->name }}">
+                                                                <input type="text" placeholder="Name" name="name"
+                                                                    value="{{ auth()->user()->name }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12 col-lg-12">
                                                             <div class="fp__comment_imput_single">
                                                                 <label>email</label>
-                                                                <input type="email" placeholder="Email" name="email" value="{{ auth()->user()->email }}">
+                                                                <input type="email" placeholder="Email" name="email"
+                                                                    value="{{ auth()->user()->email }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12">
@@ -1228,8 +1226,37 @@
             </div>
         </div>
     </div>
-    <!-- CART POPUT END -->
-    <!--=========================
-            DASHBOARD END
-        ==========================-->
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#upload').on('change', function(e) {
+
+                // const fileInput = e.target;
+                // const files = fileInput.files; // Get the list of selected files
+                // console.log(files);
+
+                let form = $('#avatar_form')[0];
+                let formData = new FormData(form);
+
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ route('profile.avatar.update') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if(response.status === 'success'){
+                            // window.location.reload();
+                            location.reload();
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    },
+                });
+            })
+        })
+    </script>
+@endpush
