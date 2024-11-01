@@ -65,7 +65,7 @@
 @endsection
 
 
-@push('script')
+@push('scripts')
     <script>
         $(document).ready(function(){
             $('.image-preview').css({
