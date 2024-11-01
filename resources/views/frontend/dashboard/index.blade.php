@@ -2,8 +2,8 @@
 
 @section('content')
     <!--=============================
-                                                BREADCRUMB START
-                                            ==============================-->
+                                                    BREADCRUMB START
+                                                ==============================-->
     <section class="fp__breadcrumb" style="background: url(images/counter_bg.jpg);">
         <div class="fp__breadcrumb_overlay">
             <div class="container">
@@ -66,9 +66,13 @@
                                     data-bs-target="#v-pills-settings" type="button" role="tab"
                                     aria-controls="v-pills-settings" aria-selected="false"><span><i
                                             class="fas fa-user-lock"></i></span> Change Password </button>
-
-                                <button class="nav-link" type="button"><span> <i class="fas fa-sign-out-alt"></i>
-                                    </span> Logout</button>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="nav-link"
+                                        onclick="event.preventDefault(); this.closest('form').submit();"
+                                        type="button"><span> <i class="fas fa-sign-out-alt"></i>
+                                        </span> Logout</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -1247,7 +1251,7 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        if(response.status === 'success'){
+                        if (response.status === 'success') {
                             // window.location.reload();
                             location.reload();
                         }
