@@ -9,6 +9,7 @@ use App\Models\SectionTitle;
 use App\Models\WhyChooseUs;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 
 class WhyChooseUsController extends Controller
 {
@@ -85,6 +86,20 @@ class WhyChooseUsController extends Controller
     public function destroy(string $id)
     {
         //
+        try {
+            $whyChooseUs = WhyChooseUs::findOrFail($id);
+            $whyChooseUs->delete();
+
+            return response([
+                'status' => 'success',
+                'message' => 'Delete successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
