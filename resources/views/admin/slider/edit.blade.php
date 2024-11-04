@@ -7,12 +7,7 @@
         </div>
         <div class="card card-primary">
             <div class="card-header">
-                <h4>Card Header</h4>
-                <div class="card-header-action">
-                    <a href="{{ route('admin.slider.create') }}" class="btn btn-primary">
-                        Create new
-                    </a>
-                </div>
+                <h4>Update item</h4>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.slider.update', $slider->id) }}" method="POST" enctype="multipart/form-data">
