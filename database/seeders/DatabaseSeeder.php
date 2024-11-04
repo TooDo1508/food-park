@@ -22,9 +22,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $this->call(UserSeeder::class);
-        // \App\Models\Slider::factory(3)->create();
+        $this->call(UserSeeder::class);
+        \App\Models\Slider::factory(3)->create();
 
-        $this->call(SectionTitle::class);
+        $this->call(WhyChooseUsTitleSeeder::class);
+        \App\Models\WhyChooseUs::factory(3)->create();
     }
 }

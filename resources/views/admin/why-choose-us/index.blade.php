@@ -33,7 +33,7 @@
                                         <input type="text" id="" class="form-control"
                                             name="why_choose_us_sub_title" value="{{ @$titles['why_choose_us_sub_title'] }}">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </form>
                             </div>
                         </div>
