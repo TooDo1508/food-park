@@ -98,6 +98,7 @@ class SliderController extends Controller
         //
         try {
             $slider = Slider::findOrFail($id);
+            $this->removeImage($slider->imagae);
             $slider->delete();
             return response([
                 'status' => 'success',
