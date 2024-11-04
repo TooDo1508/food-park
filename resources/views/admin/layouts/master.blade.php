@@ -106,6 +106,9 @@
 
                         $.ajax({
                             method: 'DELETE',
+                            data: {
+                                _token: "{{ csrf_token() }}"
+                            },
                             url: url,
                             success: function(response) {
                                 if (response.status === 'success') {
@@ -115,7 +118,8 @@
                                         text: "Your file has been deleted.",
                                         icon: "success"
                                     });
-                                    $('#slider-table').DataTable().draw();
+                                    // $('#slider-table').DataTable().draw();
+                                    location.reload();
                                 }else if (response.status === 'success'){
                                     toastr.error(response.message);
                                 }
