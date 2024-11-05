@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\CategoryDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryCreateRequest;
+use App\Http\Requests\Admin\CategoryUpdateRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Str;
@@ -62,14 +63,28 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         //
+        $category = Category::findOrFail($id);
+
+        return view('admin.product.category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryUpdateRequest $request, string $id)
     {
         //
+        $category = Category::findOrFail($id);
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $category->status = $request->status;
+        $category->show_at_home = $request->show_at_home;
+        $category->save();
+
+        toastr()->success('Update category');
+
+        return to_route('admin.category.index');
+
     }
 
     /**
@@ -77,6 +92,19 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+
+            $category->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Deleted Slider successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

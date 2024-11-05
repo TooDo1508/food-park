@@ -32,14 +32,14 @@ class CategoryDataTable extends DataTable
                 if ($query->status === 1) {
                     return '<span class="badge badge-primary">Active</span>';
                 } else {
-                    return '<span class="badge badge-primary">InActive</span>';
+                    return '<span class="badge badge-danger">InActive</span>';
                 }
             })
             ->addColumn('show_at_home', function ($query) {
                 if ($query->status === 1) {
                     return '<span class="badge badge-primary">Showing</span>';
                 } else {
-                    return '<span class="badge badge-primary">Hidden</span>';
+                    return '<span class="badge badge-danger">Hidden</span>';
                 }
             })
             ->rawColumns(['show_at_home', 'action', 'status'])

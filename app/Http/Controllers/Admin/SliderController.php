@@ -106,7 +106,7 @@ class SliderController extends Controller
             ]);
         } catch (\Exception $e) {
             return response([
-                'status' => 'success',
+                'status' => 'error',
                 'message' => $e->getMessage(),
             ]);
         }
