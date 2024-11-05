@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\CategoryDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryCreateRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Str;
 
 class CategoryController extends Controller
 {
@@ -23,14 +26,26 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return view('admin.product.category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryCreateRequest $request)
     {
-        //
+
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $category->status = $request->status;
+        $category->show_at_home = $request->show_at_home;
+        $category->save();
+
+
+        toastr()->success('Created category');
+
+        return to_route('admin.category.index');
     }
 
     /**
