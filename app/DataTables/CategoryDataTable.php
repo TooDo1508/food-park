@@ -22,7 +22,27 @@ class CategoryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'category.action')
+            ->addColumn('action', function ($query) {
+                $edit = "<a href='" . route('admin.category.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-edit'></i></a>";
+                $delete = "<a href='" . route('admin.category.destroy', $query->id) . "' class='btn btn-danger ml-2 delete-item'><i class='fas fa-trash'></i></a>";
+
+                return $edit . $delete;
+            })
+            ->addColumn('status', function ($query) {
+                if ($query->status === 1) {
+                    return '<span class="badge badge-primary">Active</span>';
+                } else {
+                    return '<span class="badge badge-primary">InActive</span>';
+                }
+            })
+            ->addColumn('show_at_home', function ($query) {
+                if ($query->status === 1) {
+                    return '<span class="badge badge-primary">Showing</span>';
+                } else {
+                    return '<span class="badge badge-primary">Hidden</span>';
+                }
+            })
+            ->rawColumns(['show_at_home', 'action', 'status'])
             ->setRowId('id');
     }
 
@@ -62,14 +82,14 @@ class CategoryDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('id')->width(20),
             Column::make('name'),
-            Column::make('status'),
-            Column::make('show_at_home'),
+            Column::make('status')->width(150),
+            Column::make('show_at_home')->width(150),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(60)
+                  ->width(120)
                   ->addClass('text-center'),
         ];
     }
