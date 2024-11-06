@@ -16,9 +16,14 @@ trait FileUploadTrait{
             $image->move(public_path($path), $imageName);
 
             // delete old file image
+            if($oldPath && File::exists(public_path($oldPath))){
+                File::delete((public_path($oldPath)));
+            }
 
             return $path.'/'.$imageName;
         }
+
+        return NULL;
     }
 
     function removeImage(string $path) : void {
