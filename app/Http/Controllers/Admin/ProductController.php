@@ -114,6 +114,19 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $this->removeImage($product->thumb_image);
+            $product->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Deleted product successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

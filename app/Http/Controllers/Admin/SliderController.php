@@ -95,7 +95,6 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         try {
             $slider = Slider::findOrFail($id);
             $this->removeImage($slider->imagae);
