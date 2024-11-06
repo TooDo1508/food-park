@@ -4,9 +4,11 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
+use App\Models\ProductGallery;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -30,5 +32,8 @@ Route::group([
     Route::resource('why-choose-us', WhyChooseUsController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('product', ProductController::class);
+
+    Route::get('product-gallery/{product}', [ProductGalleryController::class, 'index'])->name('product-gallery.show-index');
+    Route::resource('product-gallery', ProductGalleryController::class);
 
 });
