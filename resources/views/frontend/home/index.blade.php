@@ -26,7 +26,7 @@
 
 
     <!-- CART POPUT START -->
-    {{-- @include('frontend.home.components.cart-popup') --}}
+    @include('frontend.home.components.cart-popup')
 
     <!-- CART POPUT END -->
 
@@ -38,7 +38,7 @@
     <!--=============================
                             MENU ITEM START
                         ==============================-->
-    {{-- @include('frontend.home.components.menu-item') --}}
+    @include('frontend.home.components.menu-item')
 
     <!--=============================
                             MENU ITEM END

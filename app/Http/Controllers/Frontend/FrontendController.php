@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\SectionTitle;
 use App\Models\Slider;
 use App\Models\WhyChooseUs;
@@ -17,7 +19,24 @@ class FrontendController extends Controller
         $sliders = Slider::where('status', 1)->get();
         $sectionTitles = $this->getSectionTitles();
         $whyChooseUs = WhyChooseUs::where('status', 1)->get();
-        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs'));
+        $products = Product::where([
+            'status' => 1,
+            'show_at_home' => 1,
+        ])->orderBy('id', 'desc')
+            ->take(8)
+            ->get();
+
+
+        $categories = Category::where([
+            'status' => 1,
+            'show_at_home' => 1,
+        ])->get();
+        return view('frontend.home.index', compact(
+            'sliders',
+            'sectionTitles',
+            'whyChooseUs',
+            'categories'
+        ));
     }
 
     public function getSectionTitles()
@@ -28,5 +47,10 @@ class FrontendController extends Controller
             'why_choose_us_sub_title'
         ];
         return SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
+    }
+
+    public function showProduct(string $slug)
+    {
+        return view('frontend.pages.product-view');
     }
 }
