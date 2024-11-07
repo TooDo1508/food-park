@@ -39,26 +39,28 @@
 
         <div class="card card-primary">
             <div class="card-header">
-                <h4>All Image</h4>
+                <h4>All Size</h4>
             </div>
-            {{-- <div class="card-body">
+            <div class="card-body">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($images as $image)
+                        @foreach ($productSizes as $productSize)
                         <tr>
-                            <td><img src="{{ $image->image }}" width="150px"></td>
-                            <td> <a href="{{ route('admin.product-gallery.destroy', $image->id) }}" class='btn btn-danger ml-2 delete-item'><i class='fas fa-trash'></i></a></td>
+                            <td>{{ $productSize->name }}</td>
+                            <td>{{ $productSize->price }}</td>
+                            <td> <a href="{{ route('admin.product-size.destroy', $productSize->id) }}" class='btn btn-danger ml-2 delete-item'><i class='fas fa-trash'></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-            </div> --}}
+            </div>
         </div>
     </section>
 @endsection

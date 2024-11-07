@@ -16,16 +16,8 @@ class ProductSizeController extends Controller
     {
         //
         $product = Product::findOrFail($productId);
-
-        return view('admin.product.size.index', compact('product'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $productSizes = ProductSize::where('product_id', $productId)->get();
+        return view('admin.product.size.index', compact('product', 'productSizes'));
     }
 
     /**
@@ -53,34 +45,22 @@ class ProductSizeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $productSize = ProductSize::findOrFail($id);
+            $productSize->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Deleted product size successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

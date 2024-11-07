@@ -89,7 +89,7 @@ class ProductGalleryController extends Controller
             $productGallery->delete();
             return response([
                 'status' => 'success',
-                'message' => 'Deleted product successfully.',
+                'message' => 'Deleted product gallery successfully.',
             ]);
         } catch (\Exception $e) {
             return response([
