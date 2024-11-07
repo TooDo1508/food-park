@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductOption;
 use App\Models\ProductSize;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,8 @@ class ProductSizeController extends Controller
         //
         $product = Product::findOrFail($productId);
         $productSizes = ProductSize::where('product_id', $productId)->get();
-        return view('admin.product.size.index', compact('product', 'productSizes'));
+        $productOptions = ProductOption::where('product_id', $productId)->get();
+        return view('admin.product.size.index', compact('product', 'productSizes', 'productOptions'));
     }
 
     /**
