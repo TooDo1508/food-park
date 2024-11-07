@@ -49,6 +49,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Action</th>
@@ -57,6 +58,7 @@
                             <tbody>
                                 @foreach ($productSizes as $productSize)
                                     <tr>
+                                        <td>{{ ++$loop->index }}</td>
                                         <td>{{ $productSize->name }}</td>
                                         <td>{{ $productSize->price }}</td>
                                         <td> <a href="{{ route('admin.product-size.destroy', $productSize->id) }}"
@@ -108,6 +110,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>No.</th>
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Action</th>
@@ -116,6 +119,7 @@
                             <tbody>
                                 @foreach ($productOptions as $productOption)
                                     <tr>
+                                        <td>{{ ++$loop->index }}</td>
                                         <td>{{ $productOption->name }}</td>
                                         <td>{{ $productOption->price }}</td>
                                         <td> <a href="{{ route('admin.product-option.destroy', $productOption->id) }}"
