@@ -45,7 +45,7 @@ class ProductDataTable extends DataTable
                 }
             })
             ->addColumn('show_at_home', function ($query) {
-                if ($query->status === 1) {
+                if ($query->show_at_home === 1) {
                     return '<span class="badge badge-primary">Showing</span>';
                 } else {
                     return '<span class="badge badge-danger">Hidden</span>';
