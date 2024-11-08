@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProductOptionController;
 use App\Http\Controllers\Admin\ProductSizeController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Models\ProductGallery;
@@ -43,4 +44,6 @@ Route::group([
 
     Route::resource('product-option', ProductOptionController::class);
 
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+    Route::put('/general-setting', [SettingController::class, 'updateGeneralSetting'])->name('general-setting.index');
 });
