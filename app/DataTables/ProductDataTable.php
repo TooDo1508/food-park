@@ -52,10 +52,10 @@ class ProductDataTable extends DataTable
                 }
             })
             ->addColumn('price', function ($query) {
-                return '$' . $query->price;
+                return currencyPosition($query->price);
             })
             ->addColumn('offer_price', function ($query) {
-                return '$' . $query->offer_price;
+                return currencyPosition($query->offer_price);
             })
             ->addColumn('image', function ($query) {
                 return '<img width="60px" src="' . asset($query->thumb_image) . '">';

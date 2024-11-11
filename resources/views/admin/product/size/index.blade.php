@@ -60,7 +60,7 @@
                                     <tr>
                                         <td>{{ ++$loop->index }}</td>
                                         <td>{{ $productSize->name }}</td>
-                                        <td>{{ $productSize->price }}</td>
+                                        <td>{{ currencyPosition($productSize->price) }}</td>
                                         <td> <a href="{{ route('admin.product-size.destroy', $productSize->id) }}"
                                                 class='btn btn-danger ml-2 delete-item'><i class='fas fa-trash'></i></a>
                                         </td>
@@ -121,7 +121,7 @@
                                     <tr>
                                         <td>{{ ++$loop->index }}</td>
                                         <td>{{ $productOption->name }}</td>
-                                        <td>{{ $productOption->price }}</td>
+                                        <td>{{ currencyPosition($productOption->price) }}</td>
                                         <td> <a href="{{ route('admin.product-option.destroy', $productOption->id) }}"
                                                 class='btn btn-danger ml-2 delete-item'><i class='fas fa-trash'></i></a>
                                         </td>

@@ -41,7 +41,8 @@
                     <div class="col-xl-3 col-sm-6 col-lg-4 {{ $category->slug }} wow fadeInUp" data-wow-duration="1s">
                         <div class="fp__menu_item">
                             <div class="fp__menu_item_img">
-                                <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" class="img-fluid w-100">
+                                <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}"
+                                    class="img-fluid w-100">
                                 <a class="category" href="#">{{ @$product->category->name }}</a>
                             </div>
                             <div class="fp__menu_item_text">
@@ -53,19 +54,20 @@
                                     <i class="far fa-star"></i>
                                     <span>145</span>
                                 </p>
-                                <a class="title" href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
+                                <a class="title"
+                                    href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                 <h5 class="price">
                                     @if ($product->offer_price > 0)
-                                        ${{ $product->offer_price }}<del>${{ $product->price }}</del>
+                                        {{ currencyPosition($product->offer_price) }}<del>{{ currencyPosition($product->price) }}</del>
                                     @else
-                                        ${{ $product->price }}
+                                        {{ currencyPosition($product->price) }}
                                     @endif
-                                <ul class="d-flex flex-wrap justify-content-center">
-                                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
-                                                class="fas fa-shopping-basket"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="far fa-eye"></i></a></li>
-                                </ul>
+                                    <ul class="d-flex flex-wrap justify-content-center">
+                                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
+                                                    class="fas fa-shopping-basket"></i></a></li>
+                                        <li><a href="#"><i class="fal fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="far fa-eye"></i></a></li>
+                                    </ul>
                             </div>
                         </div>
                     </div>
