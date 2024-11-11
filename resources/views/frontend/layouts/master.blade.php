@@ -26,7 +26,11 @@
 </head>
 
 <body>
-
+    <div class="overlay-container">
+        <div class="overlay">
+            <span class="loader"></span>
+        </div>
+    </div>
     <!--=============================
         TOPBAR START
     ==============================-->
