@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
 
+Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
