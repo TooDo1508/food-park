@@ -12,12 +12,25 @@
                 $(".load_product_modal_body").html(productPopup);
                 $('#cartModal').modal('show');
             },
-            erro: function(xhr, status, error){
+            error: function(xhr, status, error){
                 console.error(error);
             },
             complete: function(){
                 $('.overlay').removeClass('active');
                 $('.overlay-container').addClass('d-none');
+            },
+        })
+    }
+
+    function updateSidebarCart(){
+        $.ajax({
+            method: 'GET',
+            url: '{{ route("get-cart-products") }}',
+            success: function(response){
+                $('.cart_contents').html(response);
+            },
+            error: function(xhr, status, error){
+                console.error(error);
             },
         })
     }

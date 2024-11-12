@@ -151,13 +151,14 @@
             let formData = $(this).serialize();
             $.ajax({
                 method: 'POST',
-                url: '{{ route('add-to-cart') }}',
+                url: '{{ route("add-to-cart") }}',
                 data: formData,
                 beforeSend: function(){
                     $('.modal_cart_button').attr('disabled', true);
                     $('.modal_cart_button').html(' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...');
                 },
                 success: function(response) {
+                    updateSidebarCart();
                     toastr.success(response.message);
                 },
                 erro: function(xhr, status, error) {

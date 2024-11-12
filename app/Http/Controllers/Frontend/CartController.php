@@ -14,8 +14,6 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         try {
-
-
             $product = Product::with(['productSizes', 'productOptions'])->findOrFail($request->product_id);
             $productSize = $product->productSizes->where('id', $request->product_size)->first();
             $productOption = $product->productOptions->whereIn('id', $request->product_option);
@@ -62,5 +60,9 @@ class CartController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function getCartProduct(){
+        return view('frontend.layouts.ajax-files.sidebar-cart-item')->render();
     }
 }
