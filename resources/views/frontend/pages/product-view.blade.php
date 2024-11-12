@@ -75,7 +75,7 @@
                                 @foreach ($product->productSizes as $productSize)
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="size-{{ $productSize->id }}" checked>
+                                            id="size-{{ $productSize->id }}" value="{{ $productSize->id }}">
                                         <label class="form-check-label" for="size-{{ $productSize->id }}">
                                             {{ $productSize->name }} <span>+
                                                 {{ currencyPosition($productSize->price) }}</span>
@@ -90,8 +90,8 @@
                                 <h5>select option <span>(optional)</span></h5>
                                 @foreach ($product->productOptions as $productOption)
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="option-{{ $productOption->id }}">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="option-{{ $productOption->id }}" value="{{ $productOption->id }}">
                                         <label class="form-check-label" for="option-{{ $productOption->id }}">
                                             {{ $productOption->name }} <span>+
                                                 {{ currencyPosition($productOption->price) }}</span>

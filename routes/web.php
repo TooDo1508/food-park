@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\ProfileController;
@@ -43,3 +44,6 @@ Route::group(['middleware' => 'guest'], function(){
 require __DIR__ . '/auth.php';
 
 // Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.dashboard');
+// add to cart route
+
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');

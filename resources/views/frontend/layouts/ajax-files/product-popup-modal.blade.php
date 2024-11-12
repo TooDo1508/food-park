@@ -1,6 +1,7 @@
-<form>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        <i class="fal fa-times"></i></button>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+    <i class="fal fa-times"></i></button>
+<form action="" id="modal_add_to_cart_form">
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
     <div class="fp__cart_popup_img">
         <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" class="img-fluid w-100">
     </div>
@@ -32,7 +33,8 @@
                 @foreach ($product->productSizes as $productSize)
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="product_size"
-                            data-price="{{ $productSize->price }}" id="size-{{ $productSize->id }}">
+                            value="{{ $productSize->id }}" data-price="{{ $productSize->price }}"
+                            id="size-{{ $productSize->id }}">
                         <label class="form-check-label" for="size-{{ $productSize->id }}">
                             {{ $productSize->name }} <span>+
                                 {{ currencyPosition($productSize->price) }}</span>
@@ -48,7 +50,7 @@
                 @foreach ($product->productOptions as $productOption)
                     <div class="form-check">
                         <input name="product_option[]" data-price="{{ $productOption->price }}"
-                            class="form-check-input" type="checkbox" value=""
+                            value="{{ $productOption->id }}" class="form-check-input" type="checkbox"
                             id="option-{{ $productOption->id }}">
                         <label class="form-check-label" for="option-{{ $productOption->id }}">
                             {{ $productOption->name }} <span>+
@@ -64,7 +66,7 @@
             <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                 <div class="quentity_btn">
                     <button class="btn btn-danger decrement "><i class="fal fa-minus"></i></button>
-                    <input type="text" placeholder="1" value="1" readonly id="quantity">
+                    <input type="text" placeholder="1" value="1" readonly id="quantity" name="quantity">
                     <button class="btn btn-success increment"><i class="fal fa-plus"></i></button>
                 </div>
                 @if ($product->offer_price > 0)
@@ -75,7 +77,7 @@
             </div>
         </div>
         <ul class="details_button_area d-flex flex-wrap">
-            <li><a class="common_btn" href="#">add to cart</a></li>
+            <li> <button type="submit" class="common_btn modal_cart_button">add to cart</button> </li>
         </ul>
     </div>
 </form>
@@ -115,7 +117,6 @@
             let selectedOptionPrice = 0;
             let quantity = parseFloat($('#quantity').val());
 
-            console.log(quantity);
             // Calculated the select size
             let selectedSize = $('input[name="product_size"]:checked');
             if (selectedSize.length > 0) {
@@ -128,12 +129,46 @@
                 selectedOptionPrice += parseFloat($(this).data("price"));
             })
 
-            let totalPrice = (basePrice + selectedOptionPrice + selectedSizePrice)*quantity;
+            let totalPrice = (basePrice + selectedOptionPrice + selectedSizePrice) * quantity;
 
             $('#total_price').text("{{ config('settings.site_currency_icon') }}" + totalPrice);
 
         }
 
+        //Add to cart
+        $("#modal_add_to_cart_form").on('submit', function(e) {
+            e.preventDefault();
 
+            let selectedSize = $('input[name="product_size"]');
+            if (selectedSize.length > 0) {
+                if ($('input[name="product_size"]:checked').val() === undefined) {
+                    toastr.error('Please select a size.');
+                    console.error('Please select a size.');
+                    return;
+                }
+            }
+
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                url: '{{ route('add-to-cart') }}',
+                data: formData,
+                beforeSend: function(){
+                    $('.modal_cart_button').attr('disabled', true);
+                    $('.modal_cart_button').html(' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...');
+                },
+                success: function(response) {
+                    toastr.success(response.message);
+                },
+                erro: function(xhr, status, error) {
+                    let errorMessage = xhr.responseJson.message;
+                    toastr.error(errorMessage);
+                },
+                complete: function(){
+                    $('.modal_cart_button').html('Add to cart');
+                    $('.modal_cart_button').attr('disabled', false);
+                },
+            });
+        })
     })
 </script>
