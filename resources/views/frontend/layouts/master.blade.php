@@ -26,7 +26,7 @@
 </head>
 
 <body>
-            @dd(Cart::content())
+    {{-- {{ Cart::destroy() }} --}}
     <div class="overlay-container d-none">
         <div class="overlay">
             <span class="loader"></span>

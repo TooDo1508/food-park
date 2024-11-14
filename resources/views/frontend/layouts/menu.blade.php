@@ -91,11 +91,13 @@
                             href="{{ route('product.show', $cartProduct->options->product_info['slug']) }}">{{ $cartProduct->name }}
                         </a>
                         <p class="size">Qty: {{ $cartProduct->qty }}</p>
-                        <p class="size">{{ @$cartProduct->options->product_size['name'] }}</p>
+                        @if (count($cartProduct->options->product_size) > 0)
+                            <p class="size">{{ $cartProduct->options->product_size[0]['name'] }} ({{ currencyPosition($cartProduct->options->product_size[0]['price']) }})</p>
+                        @endif
                         @foreach ($cartProduct->options->product_options as $option)
-                            <span class="extra">{{ $option['name'] }}</span>
+                            <span class="extra">{{ $option['name'] }} ({{ currencyPosition($option['price']) }})</span>
                         @endforeach
-                        <p class="price">{{ currencyPosition($cartProduct->price) }}</p>
+                        <p class="price">{{ currencyPosition($cartProduct->price) }} </p>
                     </div>
                     <span class="del_icon"><i class="fal fa-times"></i></span>
                 </li>
@@ -114,7 +116,7 @@
                 <span class="del_icon"><i class="fal fa-times"></i></span>
             </li> --}}
         </ul>
-        <p class="subtotal">sub total <span>$1220.00</span></p>
+        <p class="subtotal cart">sub total <span class="cart_subtotal">{{ currencyPosition(cartTotal()) }}</span></p>
         <a class="cart_view" href="cart_view.html"> view cart</a>
         <a class="checkout" href="check_out.html">checkout</a>
     </div>
