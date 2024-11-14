@@ -1,4 +1,5 @@
 <input type="hidden" value="{{ cartTotal() }}" id="cart_total">
+<input type="hidden" value="{{ count(Cart::content()) }}" id="cart_product_count">
 @foreach (Cart::content() as $cartProduct)
     <li>
         <div class="menu_cart_img">
@@ -9,7 +10,10 @@
                 href="{{ route('product.show', $cartProduct->options->product_info['slug']) }}">{{ $cartProduct->name }}
             </a>
             <p class="size">Qty: {{ $cartProduct->qty }}</p>
-            <p class="size">{{ @$cartProduct->options->product_size['name'] }}</p>
+            @if (count($cartProduct->options->product_size) > 0)
+                <p class="size">{{ $cartProduct->options->product_size[0]['name'] }}
+                    ({{ currencyPosition($cartProduct->options->product_size[0]['price']) }})</p>
+            @endif
             @foreach ($cartProduct->options->product_options as $option)
                 <span class="extra">{{ $option['name'] }}</span>
             @endforeach

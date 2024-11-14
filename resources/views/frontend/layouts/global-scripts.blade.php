@@ -30,6 +30,9 @@
                 $('.cart_contents').html(response);
                 let cartTotal = $('#cart_total').val();
                 $('.cart_subtotal').text("{{ currencyPosition(':cartTotal') }}", cartTotal);
+
+                let cartCount = $('#cart_product_count').val();
+                $('.cart_count').text(cartCount);
             },
             error: function(xhr, status, error){
                 console.error(error);
