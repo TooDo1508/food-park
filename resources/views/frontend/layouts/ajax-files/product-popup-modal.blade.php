@@ -6,7 +6,7 @@
         <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" class="img-fluid w-100">
     </div>
     <div class="fp__cart_popup_text">
-        <a href="#" class="title">{{ $product->name }}</a>
+        <a href="{{ route('product.show', $product->slug) }}" class="title">{{ $product->name }}</a>
         <p class="rating">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>

@@ -76,7 +76,7 @@
 <div class="fp__menu_cart_area">
     <div class="fp__menu_cart_boody">
         <div class="fp__menu_cart_header">
-            <h5 class="cart_count">total item (<span class="cart_count" style="font-weight: 600">{{ count(Cart::content()) }}</span>)</h5>
+            <h5>total item (<span class="cart_count" style="font-weight: 600">{{ count(Cart::content()) }}</span>)</h5>
             <span class="close_cart"><i class="fal fa-times"></i></span>
         </div>
         <ul class="cart_contents">
@@ -99,7 +99,7 @@
                         @endforeach
                         <p class="price">{{ currencyPosition($cartProduct->price) }} </p>
                     </div>
-                    <span class="del_icon"><i class="fal fa-times"></i></span>
+                    <span class="del_icon" onclick="removeProductFromSidebar('{{ $cartProduct->rowId }}')"><i class="fal fa-times"></i></span>
                 </li>
             @endforeach
             {{-- <li>
