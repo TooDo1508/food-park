@@ -1,11 +1,20 @@
 <script>
+    function showLoader() {
+        $('.overlay-container').removeClass('d-none');
+        $('.overlay').addClass('active');
+    }
+
+    function hidenLoader() {
+        $('.overlay').removeClass('active');
+        $('.overlay-container').addClass('d-none');
+    }
+
     function loadProductModal(productId) {
         $.ajax({
             method: 'GET',
             url: '{{ route('load-product-modal', ':productId') }}'.replace(':productId', productId),
             beforeSend: function() {
-                $('.overlay-container').removeClass('d-none');
-                $('.overlay').addClass('active');
+                showLoader();
             },
             success: function(response) {
                 productPopup = response;
@@ -16,8 +25,7 @@
                 console.error(error);
             },
             complete: function() {
-                $('.overlay').removeClass('active');
-                $('.overlay-container').addClass('d-none');
+                hidenLoader();
             },
         })
     }
@@ -49,8 +57,7 @@
             method: 'GET',
             url: "{{ route('cart-product-remove', ':rowId') }}".replace(':rowId', rowId),
             beforeSend: function() {
-                $('.overlay-container').removeClass('d-none');
-                $('.overlay').addClass('active');
+                showLoader();
             },
             success: function(response) {
                 if (response.status === 'success') {
@@ -67,6 +74,7 @@
                 toastr.error(errorMessage);
             },
             complete: function() {
+                hideLoader();
             },
         })
     }

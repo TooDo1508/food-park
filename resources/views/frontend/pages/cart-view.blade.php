@@ -154,16 +154,18 @@
                         'qty': qty,
                     },
                     beforeSend: function() {
-
+                        showLoader();
                     },
                     success: function(response) {
 
                     },
                     error: function(xhr, status, error) {
-                        console.error(error);
+                        let errorMessage = xhr.responseJson.message;
+                        hidenLoader();
+                        toastr.error(errorMessage);
                     },
                     complete: function() {
-
+                        hidenLoader();
                     }
                 })
             }
