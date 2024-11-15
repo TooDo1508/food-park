@@ -90,7 +90,8 @@
                                             </td>
 
                                             <td class="fp__pro_tk">
-                                                <h6>$180,00</h6>
+                                                <h6 class="product_cart_total">
+                                                    {{ currencyPosition(productTotal($product->rowId)) }}</h6>
                                             </td>
 
                                             <td class="fp__pro_icon">
@@ -132,7 +133,13 @@
                 let rowId = quantity.data("id");
                 quantity.val(currentQuantity + 1);
 
-                cartQtyUpdate(rowId, quantity.val());
+                cartQtyUpdate(rowId, quantity.val(), function(response) {
+                    let productTotal = response.product_total;
+                    quantity.closest("tr")
+                        .find('.product_cart_total')
+                        .text("{{ currencyPosition(':productTotal') }}"
+                        .replace(':productTotal', productTotal));
+                });
             })
 
             $('.decrement').on('click', function(e) {
@@ -145,7 +152,7 @@
                 cartQtyUpdate(rowId, quantity.val());
             })
 
-            function cartQtyUpdate(rowId, qty) {
+            function cartQtyUpdate(rowId, qty, callback = null) {
                 $.ajax({
                     method: 'POST',
                     url: '{{ route('cart.quantity-update') }}',
@@ -157,7 +164,9 @@
                         showLoader();
                     },
                     success: function(response) {
-
+                        if (callback && typeof callback === 'function') {
+                            callback(response);
+                        }
                     },
                     error: function(xhr, status, error) {
                         let errorMessage = xhr.responseJson.message;
