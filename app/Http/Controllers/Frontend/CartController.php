@@ -10,7 +10,10 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class CartController extends Controller
 {
-    //
+    public function index() {
+        return view('frontend.pages.cart-view');
+    }
+
     public function addToCart(Request $request)
     {
         try {
@@ -26,7 +29,7 @@ class CartController extends Controller
                 ],
             ];
             if ($productSize !== null) {
-                $options['product_size'][] = [
+                $options['product_size'] = [
                     'id' => $productSize->id,
                     'name' => $productSize->name,
                     'price' => $productSize->price,
@@ -76,6 +79,21 @@ class CartController extends Controller
                 'message' => 'Item has been removed!',
             ], 200);
         } catch (\Throwable $th) {
+            return response([
+                'status' => 'error',
+                'message' => 'Sorry something went wrong!',
+            ], 500);
+        }
+    }
+
+    public function cartQtyUpdate(Request $request){
+        try {
+            Cart::update($request->rowId, $request->qty);
+            return response([
+                'status' => 'success',
+                'message' => 'Update qty item success!',
+            ], 200);
+        } catch (\Exception $e) {
             return response([
                 'status' => 'error',
                 'message' => 'Sorry something went wrong!',

@@ -92,7 +92,7 @@
                         </a>
                         <p class="size">Qty: {{ $cartProduct->qty }}</p>
                         @if (count($cartProduct->options->product_size) > 0)
-                            <p class="size">{{ $cartProduct->options->product_size[0]['name'] }} ({{ currencyPosition($cartProduct->options->product_size[0]['price']) }})</p>
+                            <p class="size">{{ $cartProduct->options->product_size['name'] }} ({{ currencyPosition($cartProduct->options->product_size['price']) }})</p>
                         @endif
                         @foreach ($cartProduct->options->product_options as $option)
                             <span class="extra">{{ $option['name'] }} ({{ currencyPosition($option['price']) }})</span>
@@ -117,7 +117,7 @@
             </li> --}}
         </ul>
         <p class="subtotal cart">sub total <span class="cart_subtotal">{{ currencyPosition(cartTotal()) }}</span></p>
-        <a class="cart_view" href="cart_view.html"> view cart</a>
+        <a class="cart_view" href="{{ route('cart.index') }}"> view cart</a>
         <a class="checkout" href="check_out.html">checkout</a>
     </div>
 </div>

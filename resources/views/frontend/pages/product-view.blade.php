@@ -258,6 +258,7 @@
                 </div>
             </div>
 
+            {{-- related product --}}
             @if (count($relatedProducts) > 0)
                 <div class="fp__related_menu mt_90 xs_mt_60">
                     <h2>related item</h2>
@@ -282,14 +283,14 @@
                                         <a class="title"
                                             href="{{ route('product.show', $relatedProduct->slug) }}">{!! $relatedProduct->name !!}</a>
                                         <h5 class="price">
-                                            @if ($product->offer_price > 0)
-                                                {{ currencyPosition($product->offer_price) }}<del>{{ currencyPosition($product->price) }}</del>
+                                            @if ($relatedProduct->offer_price > 0)
+                                                {{ currencyPosition($relatedProduct->offer_price) }}<del>{{ currencyPosition($relatedProduct->price) }}</del>
                                             @else
-                                                {{ currencyPosition($product->price) }}
+                                                {{ currencyPosition($relatedProduct->price) }}
                                             @endif
                                         </h5>
                                         <ul class="d-flex flex-wrap justify-content-center">
-                                            <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
+                                            <li><a href="javascript:;" onclick="loadProductModal({{ $relatedProduct->id }})" data-bs-toggle="modal" data-bs-target="#cartModal"><i
                                                         class="fas fa-shopping-basket"></i></a></li>
                                             <li><a href="#"><i class="fal fa-heart"></i></a></li>
                                             <li><a href="#"><i class="far fa-eye"></i></a></li>

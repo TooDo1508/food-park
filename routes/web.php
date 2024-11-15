@@ -44,8 +44,13 @@ Route::group(['middleware' => 'guest'], function(){
 require __DIR__ . '/auth.php';
 
 // Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.dashboard');
-// add to cart route
 
+// add to cart route
 Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::get('get-cart-products', [CartController::class, 'getCartProduct'])->name('get-cart-products');
 Route::get('cart-product-remove/{rowId}', [CartController::class, 'cartProductRemove'])->name('cart-product-remove');
+
+//Cart page route
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart-update-qty', [CartController::class, 'cartQtyUpdate'])->name('cart.quantity-update');
+

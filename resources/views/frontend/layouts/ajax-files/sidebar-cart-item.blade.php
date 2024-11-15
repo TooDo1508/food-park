@@ -11,8 +11,8 @@
             </a>
             <p class="size">Qty: {{ $cartProduct->qty }}</p>
             @if (count($cartProduct->options->product_size) > 0)
-                <p class="size">{{ $cartProduct->options->product_size[0]['name'] }}
-                    ({{ currencyPosition($cartProduct->options->product_size[0]['price']) }})</p>
+                <p class="size">{{ $cartProduct->options->product_size['name'] }}
+                    ({{ currencyPosition($cartProduct->options->product_size['price']) }})</p>
             @endif
             @foreach ($cartProduct->options->product_options as $option)
                 <span class="extra">{{ $option['name'] }}</span>
