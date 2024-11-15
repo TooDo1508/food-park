@@ -1,9 +1,6 @@
 @extends('frontend.layouts.master')
 
 @section('content')
-    <!--=============================
-                                                        BREADCRUMB START
-                                                    ==============================-->
     <section class="fp__breadcrumb" style="background: url({{ asset('frontend/images/counter_bg.jpg') }});">
         <div class="fp__breadcrumb_overlay">
             <div class="container">
@@ -17,14 +14,7 @@
             </div>
         </div>
     </section>
-    <!--=============================
-                                                        BREADCRUMB END
-                                                    ==============================-->
 
-
-    <!--=============================
-                                                        MENU DETAILS START
-                                                    ==============================-->
     <section class="fp__menu_details mt_115 xs_mt_85 mb_95 xs_mb_65">
         <div class="container">
             <div class="row">
@@ -68,56 +58,68 @@
                             @endif
                         </h3>
                         <p class="short_description">{!! $product->short_description !!}</p>
+                        <form action="" method="POST" id="v_add_to_cart_form">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="v_base_price" class="v_base_price"
+                                value="{{ $product->offer_price > 0 ? $product->offer_price : $product->price }}">
 
-                        @if ($product->productSizes()->exists())
-                            <div class="details_size">
-                                <h5>select size</h5>
-                                @foreach ($product->productSizes as $productSize)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="size-{{ $productSize->id }}" value="{{ $productSize->id }}">
-                                        <label class="form-check-label" for="size-{{ $productSize->id }}">
-                                            {{ $productSize->name }} <span>+
-                                                {{ currencyPosition($productSize->price) }}</span>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
-                        @if ($product->productOptions()->exists())
-                            <div class="details_extra_item">
-                                <h5>select option <span>(optional)</span></h5>
-                                @foreach ($product->productOptions as $productOption)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                            id="option-{{ $productOption->id }}" value="{{ $productOption->id }}">
-                                        <label class="form-check-label" for="option-{{ $productOption->id }}">
-                                            {{ $productOption->name }} <span>+
-                                                {{ currencyPosition($productOption->price) }}</span>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
-                        <div class="details_quentity">
-                            <h5>select quentity</h5>
-                            <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
-                                <div class="quentity_btn">
-                                    <button class="btn btn-danger"><i class="fal fa-minus"></i></button>
-                                    <input type="text" placeholder="1">
-                                    <button class="btn btn-success"><i class="fal fa-plus"></i></button>
+                            @if ($product->productSizes()->exists())
+                                <div class="details_size">
+                                    <h5>select size</h5>
+                                    @foreach ($product->productSizes as $productSize)
+                                        <div class="form-check">
+                                            <input class="form-check-input v_product_size" type="radio"
+                                                name="product_size" id="size-{{ $productSize->id }}"
+                                                value="{{ $productSize->id }}" data-price="{{ $productSize->price }}">
+                                            <label class="form-check-label" for="size-{{ $productSize->id }}">
+                                                {{ $productSize->name }} <span>+
+                                                    {{ currencyPosition($productSize->price) }}</span>
+                                            </label>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <h3>$320.00</h3>
+                            @endif
+
+                            @if ($product->productOptions()->exists())
+                                <div class="details_extra_item">
+                                    <h5>select option <span>(optional)</span></h5>
+                                    @foreach ($product->productOptions as $productOption)
+                                        <div class="form-check">
+                                            <input class="form-check-input v_product_option" type="checkbox"
+                                                id="option-{{ $productOption->id }}" value="{{ $productOption->id }}"
+                                                data-price="{{ $productOption->price }}" name="product_option[]">
+                                            <label class="form-check-label" for="option-{{ $productOption->id }}">
+                                                {{ $productOption->name }} <span>+
+                                                    {{ currencyPosition($productOption->price) }}</span>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <div class="details_quentity">
+                                <h5>select quentity</h5>
+                                <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
+                                    <div class="quentity_btn">
+                                        <button class="btn btn-danger v_decrement"><i class="fal fa-minus"></i></button>
+                                        <input type="text" placeholder="1" value="1" readonly id="v_quantity" name="quantity">
+                                        <button class="btn btn-success v_increment"><i class="fal fa-plus"></i></button>
+                                    </div>
+                                    <h3 id="v_total_price">
+                                        {{ currencyPosition($product->offer_price > 0 ? $product->offer_price : $product->price) }}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+
                         <ul class="details_button_area d-flex flex-wrap">
-                            <li><a class="common_btn" href="#">add to cart</a></li>
+                            <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
                             <li><a class="wishlist" href="#"><i class="far fa-heart"></i></a></li>
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-12 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__menu_description_area mt_100 xs_mt_70">
                         <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -255,6 +257,7 @@
                     </div>
                 </div>
             </div>
+
             @if (count($relatedProducts) > 0)
                 <div class="fp__related_menu mt_90 xs_mt_60">
                     <h2>related item</h2>
@@ -387,7 +390,108 @@
     </div>
     <!-- CART POPUT END -->
 
-    <!--=============================
-                                                        MENU DETAILS END
-                                                    ==============================-->
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            //set default for input
+            // $('.v_product_size').prop('checked', false);
+            // $('.v_product_option').prop('checked', false);
+            // $('#v_quantity').val(1);
+
+            $('.v_product_size').on('change', function() {
+                v_updateTotalPrice();
+            });
+
+            $('.v_product_option').on('change', function() {
+                v_updateTotalPrice();
+            });
+
+            $('.v_increment').on('click', function(e) {
+                e.preventDefault();
+                let quantity = $('#v_quantity');
+                let currentQuantity = parseFloat(quantity.val());
+                quantity.val(currentQuantity + 1);
+                v_updateTotalPrice();
+            })
+
+            $('.v_decrement').on('click', function(e) {
+                e.preventDefault();
+                let quantity = $('#v_quantity');
+                let currentQuantity = parseFloat(quantity.val());
+                if (currentQuantity > 1) {
+                    quantity.val(currentQuantity - 1);
+                }
+                v_updateTotalPrice();
+            })
+
+            function v_updateTotalPrice() {
+                let basePrice = parseFloat($('.v_base_price').val());
+                let selectedSizePrice = 0;
+                let selectedOptionPrice = 0;
+                let quantity = parseFloat($('#v_quantity').val());
+
+                // Calculated the select size
+                let selectedSize = $('.v_product_size:checked');
+                if (selectedSize.length > 0) {
+                    selectedSizePrice = parseFloat(selectedSize.data("price"));
+                }
+
+                // Calculated the select option
+                let selectedOptions = $('.v_product_option:checked');
+                $(selectedOptions).each(function() {
+                    selectedOptionPrice += parseFloat($(this).data("price"));
+                })
+
+                let totalPrice = (basePrice + selectedOptionPrice + selectedSizePrice) * quantity;
+
+                $('#v_total_price').text("{{ config('settings.site_currency_icon') }}" + totalPrice);
+
+            }
+
+            $('.v_submit_button').on('click', function(e){
+                e.preventDefault();
+                $("#v_add_to_cart_form").submit();
+            })
+            //Add to cart
+            $("#v_add_to_cart_form").on('submit', function(e) {
+                e.preventDefault();
+
+                let selectedSize = $('.v_product_size');
+                if (selectedSize.length > 0) {
+                    if ($('.v_product_size:checked').val() === undefined) {
+                        toastr.error('Please select a size.');
+                        console.error('Please select a size.');
+                        return;
+                    }
+                }
+
+                let formData = $(this).serialize();
+                $.ajax({
+                    method: 'POST',
+                    url: '{{ route('add-to-cart') }}',
+                    data: formData,
+                    beforeSend: function() {
+                        $('.modal_cart_button').attr('disabled', true);
+                        $('.modal_cart_button').html(
+                            ' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...'
+                            );
+                    },
+                    success: function(response) {
+                        updateSidebarCart();
+                        toastr.success(response.message);
+                    },
+                    erro: function(xhr, status, error) {
+                        let errorMessage = xhr.responseJson.message;
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        $('.modal_cart_button').html('Add to cart');
+                        $('.modal_cart_button').attr('disabled', false);
+                    },
+                });
+            })
+        });
+    </script>
+@endpush
