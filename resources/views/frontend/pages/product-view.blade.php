@@ -474,8 +474,8 @@
                     url: '{{ route('add-to-cart') }}',
                     data: formData,
                     beforeSend: function() {
-                        $('.modal_cart_button').attr('disabled', true);
-                        $('.modal_cart_button').html(
+                        $('.v_submit_button').attr('disabled', true);
+                        $('.v_submit_button').html(
                             ' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...'
                             );
                     },
@@ -488,8 +488,8 @@
                         toastr.error(errorMessage);
                     },
                     complete: function() {
-                        $('.modal_cart_button').html('Add to cart');
-                        $('.modal_cart_button').attr('disabled', false);
+                        $('.v_submit_button').html('Add to cart');
+                        $('.v_submit_button').attr('disabled', false);
                     },
                 });
             })

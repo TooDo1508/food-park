@@ -63,10 +63,8 @@
                 if (response.status === 'success') {
                     updateSidebarCart(function() {
                         toastr.success(response.message);
-                        $('.overlay').removeClass('active');
-                        $('.overlay-container').addClass('d-none');
+                        hidenLoader();
                     });
-
                 }
             },
             error: function(xhr, status, error) {
@@ -74,7 +72,7 @@
                 toastr.error(errorMessage);
             },
             complete: function() {
-                hideLoader();
+                hidenLoader();
             },
         })
     }

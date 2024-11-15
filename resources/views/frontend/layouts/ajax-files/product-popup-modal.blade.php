@@ -32,7 +32,7 @@
                 <h5>select size</h5>
                 @foreach ($product->productSizes as $productSize)
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="product_size"
+                        <input class="form-check-input md_product_size" type="radio" name="product_size"
                             value="{{ $productSize->id }}" data-price="{{ $productSize->price }}"
                             id="size-{{ $productSize->id }}">
                         <label class="form-check-label" for="size-{{ $productSize->id }}">
@@ -50,7 +50,7 @@
                 @foreach ($product->productOptions as $productOption)
                     <div class="form-check">
                         <input name="product_option[]" data-price="{{ $productOption->price }}"
-                            value="{{ $productOption->id }}" class="form-check-input" type="checkbox"
+                            value="{{ $productOption->id }}" class="form-check-input md_product_option" type="checkbox"
                             id="option-{{ $productOption->id }}">
                         <label class="form-check-label" for="option-{{ $productOption->id }}">
                             {{ $productOption->name }} <span>+
@@ -138,8 +138,8 @@
         //Add to cart
         $("#modal_add_to_cart_form").on('submit', function(e) {
             e.preventDefault();
-
             let selectedSize = $('input[name="product_size"]');
+            console.log(selectedSize);
             if (selectedSize.length > 0) {
                 if ($('input[name="product_size"]:checked').val() === undefined) {
                     toastr.error('Please select a size.');
@@ -154,8 +154,8 @@
                 url: '{{ route("add-to-cart") }}',
                 data: formData,
                 beforeSend: function(){
-                    $('.v_submit_button').attr('disabled', true);
-                    $('.v_submit_button').html(' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...');
+                    $('.modal_cart_button').attr('disabled', true);
+                    $('.modal_cart_button').html(' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...');
                 },
                 success: function(response) {
                     updateSidebarCart();
@@ -166,8 +166,8 @@
                     toastr.error(errorMessage);
                 },
                 complete: function(){
-                    $('.v_submit_button').html('Add to cart');
-                    $('.v_submit_button').attr('disabled', false);
+                    $('.modal_cart_button').html('Add to cart');
+                    $('.modal_cart_button').attr('disabled', false);
                 },
             });
         })

@@ -49,7 +49,7 @@
                                         </th>
 
                                         <th class="fp__pro_icon">
-                                            <a class="clear_all" href="#">clear all</a>
+                                            <a class="clear_all" href="{{ route('cart.destroy') }}">clear all</a>
                                         </th>
                                     </tr>
                                     @foreach (Cart::content() as $product)
@@ -95,10 +95,16 @@
                                             </td>
 
                                             <td class="fp__pro_icon">
-                                                <a href="#"><i class="far fa-times"></i></a>
+                                                <a href="#" class="remove_cart_product"
+                                                    data-id="{{ $product->rowId }}"><i class="far fa-times"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @if (Cart::content()->count() === 0)
+                                        <tr>
+                                            <td colspan="6" class="text-center" style="width: 100%; display: inline">Cart is empty</td>
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -138,7 +144,7 @@
                     quantity.closest("tr")
                         .find('.product_cart_total')
                         .text("{{ currencyPosition(':productTotal') }}"
-                        .replace(':productTotal', productTotal));
+                            .replace(':productTotal', productTotal));
                 });
             })
 
@@ -176,6 +182,34 @@
                     complete: function() {
                         hidenLoader();
                     }
+                })
+            }
+
+            $('.remove_cart_product').on('click', function(e) {
+                e.preventDefault();
+                let rowId = $(this).data("id");
+                removeCartProduct(rowId);
+                $(this).closest('tr').remove();
+            })
+
+            function removeCartProduct(rowId) {
+                $.ajax({
+                    method: 'GET',
+                    url: "{{ route('cart-product-remove', ':rowId') }}".replace(':rowId', rowId),
+                    beforeSend: function() {
+                        showLoader();
+                    },
+                    success: function(response) {
+                        updateSidebarCart();
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = xhr.responseJson.message;
+                        hidenLoader();
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        hidenLoader();
+                    },
                 })
             }
         })
