@@ -6,16 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Cart;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use PhpParser\Node\Stmt\TryCatch;
+
+use function Laravel\Prompts\error;
 
 class CartController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('frontend.pages.cart-view');
     }
 
     public function addToCart(Request $request)
     {
+        $product = Product::with(['productSizes', 'productOptions'])->findOrFail($request->product_id);
+        if ($product->quantity < $request->quantity) {
+            throw ValidationException::withMessages(['Quantity is not availlable']);
+        }
+
         try {
             $product = Product::with(['productSizes', 'productOptions'])->findOrFail($request->product_id);
             $productSize = $product->productSizes->where('id', $request->product_size)->first();
@@ -86,12 +95,25 @@ class CartController extends Controller
         }
     }
 
-    public function cartQtyUpdate(Request $request){
+    public function cartQtyUpdate(Request $request)
+    {
+        $cartItem = Cart::get($request->rowId);
+        $product = Product::findOrFail($cartItem->id);
+
+        if ($product->quantity < $request->qty) {
+            return response([
+                'status' => 'error',
+                'message' => 'Quantity is not availlable!',
+                'qty' => $cartItem->qty
+            ]);
+        }
+
         try {
-            Cart::update($request->rowId, $request->qty);
+            $cart = Cart::update($request->rowId, $request->qty);
             return response([
                 'status' => 'success',
                 'message' => 'Update qty item success!',
+                'qty' => $cart->qty,
                 'product_total' => productTotal($request->rowId),
             ], 200);
         } catch (\Exception $e) {
@@ -102,7 +124,8 @@ class CartController extends Controller
         }
     }
 
-    public function cartDestroy() {
+    public function cartDestroy()
+    {
         Cart::destroy();
         return redirect()->back();
     }

@@ -161,7 +161,7 @@
                     toastr.success(response.message);
                 },
                 erro: function(xhr, status, error) {
-                    let errorMessage = xhr.responseJson.message;
+                    let errorMessage = xhr.responseJSON.message;
                     toastr.error(errorMessage);
                 },
                 complete: function(){

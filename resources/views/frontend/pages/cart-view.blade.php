@@ -102,7 +102,8 @@
                                     @endforeach
                                     @if (Cart::content()->count() === 0)
                                         <tr>
-                                            <td colspan="6" class="text-center" style="width: 100%; display: inline">Cart is empty</td>
+                                            <td colspan="6" class="text-center" style="width: 100%; display: inline">Cart
+                                                is empty</td>
                                         </tr>
                                     @endif
                                 </tbody>
@@ -137,14 +138,22 @@
                 let quantity = $(this).siblings('#quantity');
                 let currentQuantity = parseFloat(quantity.val());
                 let rowId = quantity.data("id");
+
                 quantity.val(currentQuantity + 1);
 
                 cartQtyUpdate(rowId, quantity.val(), function(response) {
-                    let productTotal = response.product_total;
-                    quantity.closest("tr")
-                        .find('.product_cart_total')
-                        .text("{{ currencyPosition(':productTotal') }}"
-                            .replace(':productTotal', productTotal));
+                    if (response.status === 'success') {
+                        quantity.val(response.qty);
+
+                        let productTotal = response.product_total;
+                        quantity.closest("tr")
+                            .find('.product_cart_total')
+                            .text("{{ currencyPosition(':productTotal') }}"
+                                .replace(':productTotal', productTotal));
+                    } else if (response.status === 'error') {
+                        quantity.val(response.qty);
+                        toastr.error(response.message);
+                    }
                 });
             })
 
@@ -152,10 +161,24 @@
                 let quantity = $(this).siblings('#quantity');
                 let currentQuantity = parseFloat(quantity.val());
                 let rowId = quantity.data("id");
+                quantity.val(currentQuantity - 1);
+
                 if (currentQuantity > 1) {
-                    quantity.val(currentQuantity - 1);
+                    cartQtyUpdate(rowId, quantity.val(), function(response) {
+                        quantity.val(response.qty);
+
+
+                        if (response.status === 'success') {
+
+                            let productTotal = response.product_total;
+                            quantity.closest("tr")
+                                .find('.product_cart_total')
+                                .text("{{ currencyPosition(':productTotal') }}"
+                                    .replace(':productTotal', productTotal));
+
+                        }
+                    });
                 }
-                cartQtyUpdate(rowId, quantity.val());
             })
 
             function cartQtyUpdate(rowId, qty, callback = null) {
@@ -175,7 +198,7 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        let errorMessage = xhr.responseJson.message;
+                        let errorMessage = xhr.responseJSON.message;
                         hidenLoader();
                         toastr.error(errorMessage);
                     },
@@ -203,7 +226,7 @@
                         updateSidebarCart();
                     },
                     error: function(xhr, status, error) {
-                        let errorMessage = xhr.responseJson.message;
+                        let errorMessage = xhr.responseJSON.message;
                         hidenLoader();
                         toastr.error(errorMessage);
                     },
