@@ -118,13 +118,13 @@
             let quantity = parseFloat($('#quantity').val());
 
             // Calculated the select size
-            let selectedSize = $('input[name="product_size"]:checked');
+            let selectedSize = $('.md_product_size:checked');
             if (selectedSize.length > 0) {
                 selectedSizePrice = parseFloat(selectedSize.data("price"));
             }
 
             // Calculated the select option
-            let selectedOptions = $('input[name="product_option[]"]:checked');
+            let selectedOptions = $('.md_product_option:checked');
             $(selectedOptions).each(function() {
                 selectedOptionPrice += parseFloat($(this).data("price"));
             })
@@ -138,10 +138,9 @@
         //Add to cart
         $("#modal_add_to_cart_form").on('submit', function(e) {
             e.preventDefault();
-            let selectedSize = $('input[name="product_size"]');
-            console.log(selectedSize);
+            let selectedSize = $('.md_product_size');
             if (selectedSize.length > 0) {
-                if ($('input[name="product_size"]:checked').val() === undefined) {
+                if ($('.md_product_size:checked').val() === undefined) {
                     toastr.error('Please select a size.');
                     console.error('Please select a size.');
                     return;
