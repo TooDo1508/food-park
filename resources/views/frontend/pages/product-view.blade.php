@@ -103,7 +103,8 @@
                                 <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                                     <div class="quentity_btn">
                                         <button class="btn btn-danger v_decrement"><i class="fal fa-minus"></i></button>
-                                        <input type="text" placeholder="1" value="1" readonly id="v_quantity" name="quantity">
+                                        <input type="text" placeholder="1" value="1" readonly id="v_quantity"
+                                            name="quantity">
                                         <button class="btn btn-success v_increment"><i class="fal fa-plus"></i></button>
                                     </div>
                                     <h3 id="v_total_price">
@@ -114,7 +115,11 @@
                         </form>
 
                         <ul class="details_button_area d-flex flex-wrap">
-                            <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
+                            @if ($product->quantity === 0)
+                                <li><a class="common_btn bg-danger" href="javascript:;">Stock out</a></li>
+                            @else
+                                <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
+                            @endif
                             <li><a class="wishlist" href="#"><i class="far fa-heart"></i></a></li>
                         </ul>
                     </div>
@@ -125,8 +130,8 @@
                         <ul class="nav nav-pills" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">Description</button>
+                                    data-bs-target="#pills-home" type="button" role="tab"
+                                    aria-controls="pills-home" aria-selected="true">Description</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
@@ -290,7 +295,9 @@
                                             @endif
                                         </h5>
                                         <ul class="d-flex flex-wrap justify-content-center">
-                                            <li><a href="javascript:;" onclick="loadProductModal({{ $relatedProduct->id }})" data-bs-toggle="modal" data-bs-target="#cartModal"><i
+                                            <li><a href="javascript:;"
+                                                    onclick="loadProductModal({{ $relatedProduct->id }})"
+                                                    data-bs-toggle="modal" data-bs-target="#cartModal"><i
                                                         class="fas fa-shopping-basket"></i></a></li>
                                             <li><a href="#"><i class="fal fa-heart"></i></a></li>
                                             <li><a href="#"><i class="far fa-eye"></i></a></li>
@@ -381,6 +388,7 @@
                                 </div>
                             </div>
                             <ul class="details_button_area d-flex flex-wrap">
+
                                 <li><a class="common_btn" href="#">add to cart</a></li>
                             </ul>
                         </div>
@@ -451,7 +459,7 @@
 
             }
 
-            $('.v_submit_button').on('click', function(e){
+            $('.v_submit_button').on('click', function(e) {
                 e.preventDefault();
                 $("#v_add_to_cart_form").submit();
             })
@@ -477,7 +485,7 @@
                         $('.v_submit_button').attr('disabled', true);
                         $('.v_submit_button').html(
                             ' <span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...'
-                            );
+                        );
                     },
                     success: function(response) {
                         updateSidebarCart();
