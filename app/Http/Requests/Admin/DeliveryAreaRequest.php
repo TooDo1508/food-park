@@ -26,7 +26,6 @@ class DeliveryAreaRequest extends FormRequest
             'area_name' => ['required', 'max:255'],
             'min_delivery_time' => ['required', 'max:255'],
             'max_delivery_time' => ['required', 'max:255'],
-            'max_delivery_time' => ['required', 'max:255'],
             'delivery_fee' => ['required', 'numeric'],
             'status' => ['required','boolean'],
         ];

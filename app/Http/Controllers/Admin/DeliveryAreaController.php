@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\DeliveryAreaDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeliveryAreaRequest;
-use App\Models\DelivryArea;
+use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
 
 class DeliveryAreaController extends Controller
@@ -32,7 +32,7 @@ class DeliveryAreaController extends Controller
      */
     public function store(DeliveryAreaRequest $request)
     {
-        $area = new DelivryArea();
+        $area = new DeliveryArea();
         $area->area_name = $request->area_name;
         $area->min_delivery_time = $request->min_delivery_time;
         $area->max_delivery_time = $request->max_delivery_time;
@@ -59,21 +59,46 @@ class DeliveryAreaController extends Controller
     public function edit(string $id)
     {
         //
+        $area = DeliveryArea::findOrFail($id);
+        return view('admin.delivery-area.edit', compact('area'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DeliveryAreaRequest $request, string $id)
     {
         //
+        $area = DeliveryArea::findOrFail($id);
+        $area->area_name = $request->area_name;
+        $area->min_delivery_time = $request->min_delivery_time;
+        $area->max_delivery_time = $request->max_delivery_time;
+        $area->delivery_fee = $request->delivery_fee;
+        $area->status = $request->status;
+        $area->save();
+
+        toastr()->success('Update delivery successfully');
+
+        return to_route('admin.delivery-area.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     */
+     */ 
     public function destroy(string $id)
     {
-        //
+        try {
+            $area = DeliveryArea::findOrFail($id);
+            $area->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Deleted delivery area successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

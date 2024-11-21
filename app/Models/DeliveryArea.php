@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DelivryArea extends Model
+class DeliveryArea extends Model
 {
     use HasFactory;
 }
