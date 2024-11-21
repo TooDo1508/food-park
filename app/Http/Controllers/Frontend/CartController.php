@@ -86,6 +86,8 @@ class CartController extends Controller
             return response([
                 'status' => 'success',
                 'message' => 'Item has been removed!',
+                'cart_total' => cartTotal(),
+                'grand_cart_total' => grandCartTotal(),
             ], 200);
         } catch (\Throwable $th) {
             return response([
@@ -115,6 +117,8 @@ class CartController extends Controller
                 'message' => 'Update qty item success!',
                 'qty' => $cart->qty,
                 'product_total' => productTotal($request->rowId),
+                'cart_total' => cartTotal(),
+                'grand_cart_total' => grandCartTotal(),
             ], 200);
         } catch (\Exception $e) {
             return response([
@@ -127,6 +131,7 @@ class CartController extends Controller
     public function cartDestroy()
     {
         Cart::destroy();
+        session()->forget('coupon');
         return redirect()->back();
     }
 }

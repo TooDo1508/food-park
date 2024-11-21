@@ -76,4 +76,9 @@
             },
         })
     }
+
+    // subtotal
+    function getCartTotal(){
+        return parseInt("{{ cartTotal() }}");
+    }
 </script>
