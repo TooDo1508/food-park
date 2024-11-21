@@ -73,7 +73,6 @@ class FrontendController extends Controller
 
     public function applyCoupon(Request $request)
     {
-
         $subtotal = $request->subtotal;
         $code = $request->code;
         $coupon = Coupon::where('code', $code)->first();
@@ -108,7 +107,27 @@ class FrontendController extends Controller
         return response([
             'message' => 'Coupon applied successfully',
             'discount' => $discount,
-            'finalTotal' => $finalTotal
+            'finalTotal' => $finalTotal,
+            'coupon_code' => $code,
         ]);
+    }
+
+    function destroyCoupon()
+    {
+        try {
+            session()->forget('coupon');
+            return response([
+                'status' => 'success',
+                'message' => 'Coupon removed.',
+                'grand_cart_total' => grandCartTotal(),
+            ]);
+        } catch (\Exception $e) {
+            logger($e);
+            return response([
+                'status' => 'success',
+                'message' => $e->getMessage(),
+                'grand_cart_total' => grandCartTotal(),
+            ]);
+        }
     }
 }

@@ -132,9 +132,19 @@
                                 @endif
                             </span></p>
                         <form id="coupon_form">
-                            <input type="text" id="coupon_code" name="code" placeholder="Coupon Code" value="{{ session()->get('coupon') ? session()->get('coupon')['code'] : '' }}">
+                            <input type="text" id="coupon_code" name="code" placeholder="Coupon Code">
                             <button type="submit">apply</button>
                         </form>
+                        <div class="coupon_card"></div>
+                        @if (session()->has('coupon'))
+                            <div class="card mt-2">
+                                <div class="m-3">
+                                    <span>Applied Coupon:<b> {{ session()->get('coupon')['code'] }}</b></span>
+                                    <button id="destroy_coupon"><i class="far fa-times"></i></button>
+                                </div>
+                            </div>
+                        @endif
+
                         <a class="common_btn" href=" #">checkout</a>
                     </div>
                 </div>
@@ -283,10 +293,17 @@
 
                     },
                     success: function(response) {
-                        $('#discount').text("{{ config('settings.site_currency_icon') }}" + response
-                            .discount)
+                        $('#coupon_code').val("");
+                        $('#discount').text(response.discount + "{{ config('settings.site_currency_icon') }}");
                         $('#final_total').text("{{ config('settings.site_currency_icon') }}" + response
-                            .finalTotal)
+                            .finalTotal);
+                        couponCartHtml = `<div class="card mt-2">
+                                <div class="m-3">
+                                    <span>Applied Coupon: <b class="v_coupon_code">${response.coupon_code}</b></span>
+                                    <button id="destroy_coupon"><i class="far fa-times"></i></button>
+                                </div>
+                            </div>`;
+                        $('.coupon_card').html(couponCartHtml);
                         toastr.success(response.message);
                     },
                     error: function(xhr, status, error) {
@@ -296,6 +313,35 @@
                     },
                     complete: function() {
 
+                    }
+                })
+            }
+
+            $(document).on('click', "#destroy_coupon", function(e) {
+                destroyCoupon();
+            })
+
+            function destroyCoupon() {
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ route('destroy-coupon') }}',
+                    beforeSend: function() {
+                        showLoader();
+                    },
+                    success: function(response) {
+                        $('.coupon_card').html("");
+                        $('#discount').text("{{ config('settings.site_currency_icon') }}" + 0);
+                        $('#final_total').text("{{ config('settings.site_currency_icon') }}" + response
+                            .grand_cart_total);
+                        toastr.success(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = xhr.responseJSON.message;
+                        hidenLoader();
+                        toastr.error(errorMessage);
+                    },
+                    complete: function() {
+                        hidenLoader();
                     }
                 })
             }
