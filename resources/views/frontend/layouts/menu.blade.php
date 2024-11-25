@@ -118,7 +118,7 @@
         </ul>
         <p class="subtotal cart">sub total <span class="cart_subtotal">{{ currencyPosition(cartTotal()) }}</span></p>
         <a class="cart_view" href="{{ route('cart.index') }}"> view cart</a>
-        <a class="checkout" href="check_out.html">checkout</a>
+        <a class="checkout" href="{{ route('checkout.index') }}">checkout</a>
     </div>
 </div>
 
