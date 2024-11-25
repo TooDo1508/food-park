@@ -74,16 +74,16 @@ if (!function_exists('productTotal')) {
 }
 
 if (!function_exists('grandCartTotal')) {
-    function grandCartTotal()
+    function grandCartTotal($deliveyFee = 0)
     {
         $cartTotal = cartTotal();
         if (session()->has('coupon')) {
             $discount = session()->get('coupon')['discount'];
-            $total = number_format($cartTotal - $discount, 2);
+            $total = number_format($cartTotal + $deliveyFee - $discount, 2);
 
             return $total;
         } else {
-            $total = number_format($cartTotal, 2);
+            $total = number_format($cartTotal + $deliveyFee, 2);
             return $total;
         }
     }

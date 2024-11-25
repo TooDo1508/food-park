@@ -21,7 +21,7 @@ class CheckoutController extends Controller
         try {
             $address = Address::findOrFail($id);
             $deliveryFee = $address->deliveryArea->delivery_fee;
-            $grandTotal = number_format(grandCartTotal() + $deliveryFee, 2);
+            $grandTotal = number_format(grandCartTotal($deliveryFee), 2);
 
             return response([
                 'delivery_fee' => $deliveryFee,
@@ -44,9 +44,8 @@ class CheckoutController extends Controller
 
         $selectedAddress = $address->address.', Area: '. $address->deliveryArea?->area_name;
 
-        // session()->put('address')
-
-        session('address' , $selectedAddress);
+        session()->put('address', $selectedAddress);
+        session()->put('delivery_fee', $address->deliveryArea->delivery_fee);
 
         return response([
             'redirect_url' => route('payment.index')
