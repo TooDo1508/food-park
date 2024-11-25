@@ -13,13 +13,15 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     // //
-    public function index() : View {
+    public function index(): View
+    {
         $deliveryAreas = DeliveryArea::where('status', 1)->get();
         $userAddress = Address::where('user_id', auth()->user()->id)->get();
         return view('frontend.dashboard.index', compact('deliveryAreas', 'userAddress'));
     }
 
-    public function createAddress(AddressCreateRequest $request){
+    public function createAddress(AddressCreateRequest $request)
+    {
         $address = new Address();
         $address->user_id = auth()->user()->id;
         $address->delivery_area_id = $request->area;
@@ -36,7 +38,8 @@ class DashboardController extends Controller
         return to_route('dashboard');
     }
 
-    public function updateAddress(AddressUpdateRequest $request, string $id){
+    public function updateAddress(AddressUpdateRequest $request, string $id)
+    {
         $address = Address::findOrFail($id);
         $address->user_id = auth()->user()->id;
         $address->delivery_area_id = $request->area;
@@ -52,5 +55,21 @@ class DashboardController extends Controller
         toastr()->success('Update address successfully');
 
         return to_route('dashboard');
+    }
+    public function destroyAddress(string $id)
+    {
+        $address = Address::findOrFail($id);
+        if ($address && $address->user_id === auth()->user()->id) {
+            $address->delete();
+            return response([
+                'status' => 'success',
+                'message' => 'Deleted address successfully.',
+            ]);
+        }
+
+        return response([
+            'status' => 'error',
+            'message' => 'Something went wrong!',
+        ]);
     }
 }

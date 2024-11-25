@@ -1,4 +1,49 @@
 <script>
+    $('body').on('click', '.delete-item', function(e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        console.log(url);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    method: 'DELETE',
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    url: url,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            // $('#slider-table').DataTable().draw();
+                            location.reload();
+                        } else if (response.status === 'error') {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                })
+
+            }
+        });
+    });
+
+
     function showLoader() {
         $('.overlay-container').removeClass('d-none');
         $('.overlay').addClass('active');
@@ -78,7 +123,7 @@
     }
 
     // subtotal
-    function getCartTotal(){
+    function getCartTotal() {
         return parseInt("{{ cartTotal() }}");
     }
 </script>

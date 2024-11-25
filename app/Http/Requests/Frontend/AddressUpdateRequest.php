@@ -15,7 +15,6 @@ class AddressUpdateRequest extends FormRequest
         $addressId = $this->route('id');
 
         $address = Address::find($addressId);
-        dd($address && $address->user_id === auth()->user()->id);
 
         return $address && $address->user_id === auth()->user()->id;
     }
