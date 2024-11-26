@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DeliveryAreaController;
+use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProductOptionController;
@@ -50,6 +51,10 @@ Route::group([
 
     Route::resource('delivery-area', DeliveryAreaController::class);
 
+    // payment settings route
+    Route::get('/payment-gateway-setting', [PaymentGatewayController::class, 'index'])->name('payment-setting.index');
+
+    //settings route
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/general-setting', [SettingController::class, 'updateGeneralSetting'])->name('general-setting.index');
 });
