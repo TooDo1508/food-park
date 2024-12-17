@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\OrderPaymentUpdateEvent;
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -106,17 +107,18 @@ class PaymentController extends Controller
             ]
         ]);
 
-        if(isset($response['id']) && $response['id'] != NULL){
-            foreach($response['links'] as $link){
-                if($link['rel'] === 'approve'){
+        if (isset($response['id']) && $response['id'] != NULL) {
+            foreach ($response['links'] as $link) {
+                if ($link['rel'] === 'approve') {
                     return redirect()->away($link['href']);
-                }else{
+                } else {
                 }
             }
         }
     }
 
-    public function paypalSuccess(Request $request) {
+    public function paypalSuccess(Request $request)
+    {
         $config = $this->setPaypalConfig();
         $provider = new PayPalClient($config);
 
@@ -124,10 +126,19 @@ class PaymentController extends Controller
 
         $response = $provider->capturePaymentOrder($request->token);
 
-        if(isset($response['status']) && $response['status'] === 'COMPLETED'){
-            dd('payment oke');
-        }
+        if (isset($response['status']) && $response['status'] === 'COMPLETED') {
+            $orderId = session()->get('order_id');
+            $captures = $response['purchase_units'][0]['payments']['captures'][0];
+            $paymentIfo = [
+                'transaction_id' => $captures['id'],
+                'currency' => $captures['amount']['currency_code'],
+                'status' => $captures['status'],
+            ];
 
+            OrderPaymentUpdateEvent::dispatch($orderId, $paymentIfo, 'PayPal');
+
+            dd('success');
+        }
     }
 
     public function paypalCancel() {}
